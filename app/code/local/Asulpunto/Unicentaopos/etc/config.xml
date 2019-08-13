@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento - Unicenta Opos Integrator by Asulpunto
+ *
+ * NOTICE OF LICENSE
+ *  This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, Version 3 of the License. You can view
+ *   the license here http://opensource.org/licenses/GPL-3.0
+
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ * @category    Asulpunto
+ * @package     Asulpunto_Unicentaopos
+ * @copyright   Copyright (c) 2013 Asulpunto (http://www.asulpunto.com)
+ * @license     http://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
+ *
+ */
+
+-->
+<config>
+    <modules>
+        <Asulpunto_Unicentaopos>
+            <version>0.0.2</version>
+        </Asulpunto_Unicentaopos>
+    </modules>
+    <global>
+        <helpers>
+            <unicentaopos>
+                <class>Asulpunto_Unicentaopos_Helper</class>
+            </unicentaopos>
+        </helpers>
+        <blocks>
+            <asulpuntounicentaopos>
+                <class>Asulpunto_Unicentaopos_Block</class>
+            </asulpuntounicentaopos>
+        </blocks>
+        <models>
+            <unicentaopos>
+                <class>Asulpunto_Unicentaopos_Model</class>
+                <resourceModel>unicentaopos_mysql4</resourceModel>
+            </unicentaopos>
+            <unicentaopos_mysql4>
+                <class>Asulpunto_Unicentaopos_Model_Mysql4</class>
+                <entities>
+                    <unicentaoposproduct><table>asulpunto_unicentaopos_product</table></unicentaoposproduct>
+                    <unicentaoposorderitem><table>asulpunto_unicentaopos_order_item</table></unicentaoposorderitem>
+                    <!--<flat_price2><table>macfarlane_flat_price_2</table></flat_price2>-->
+                </entities>
+            </unicentaopos_mysql4>
+        </models>
+        <resources>
+            <unicentaopos_setup>
+                <setup>
+                    <module>Asulpunto_Unicentaopos</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </unicentaopos_setup>
+        </resources>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <unicentaopos after="Mage_Adminhtml">Asulpunto_Unicentaopos</unicentaopos>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <crontab>
+        <jobs>
+            <unicentaopos_products_sysnc>
+                <schedule><cron_expr>*/10 * * * *</cron_expr></schedule>
+                <run><model>unicentaopos/unicentaoposapi::cronProducts</model></run>
+            </unicentaopos_products_sysnc>
+            <unicentaopos_stock_sysnc>
+                <schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
+                <run><model>unicentaopos/unicentaoposapi::cronStock</model></run>
+            </unicentaopos_stock_sysnc>
+                 <unicentaopos_order_sysnc>
+                     <schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
+                     <run><model>unicentaopos/unicentaoposapi::cronOrders</model></run>
+                 </unicentaopos_order_sysnc>
+        </jobs>
+    </crontab>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <asulpuntounicentaopos>
+                                            <title>Asulpunto Settings</title>
+                                        </asulpuntounicentaopos>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <default>
+        <asulpuntounicentaopos>
+            <tools>
+                <orderstatus>complete</orderstatus>
+            </tools>
+        </asulpuntounicentaopos>
+    </default>
+</config>

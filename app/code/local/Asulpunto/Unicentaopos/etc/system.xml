@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento - Unicenta Opos Integrator by Asulpunto
+ *
+ * NOTICE OF LICENSE
+ *  This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, Version 3 of the License. You can view
+ *   the license here http://opensource.org/licenses/GPL-3.0
+
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ * @category    Asulpunto
+ * @package     Asulpunto_Unicentaopos
+ * @copyright   Copyright (c) 2013 Asulpunto (http://www.asulpunto.com)
+ * @license     http://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
+ *
+ */
+-->
+<config>
+    <tabs>
+        <asulpunto translate="label" module="unicentaopos">
+            <label>Asulpunto</label>
+            <sort_order>99999</sort_order>
+        </asulpunto>
+    </tabs>
+    <sections>
+
+        <asulpuntounicentaopos translate="label" module="unicentaopos">
+            <label>Tweaks</label>
+            <tab>asulpunto</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>99999</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <banner>
+                    <label>Module Information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>
+                        <![CDATA[Module developed by Asulpunto. <br/><a href="http://www.asulpunto.com">http://www.asulpunto.com</a>]]></comment>
+                </banner>
+                <unicentaconfig translate="label">
+                    <label>Configuration</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <url translate="label">
+                            <label>Unicenta Opos Hostname</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </url>
+                        <dbname translate="label">
+                            <label>Unicenta Opos Database Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </dbname>
+                        <login translate="label">
+                            <label>Unicenta Opos Database Login</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </login>
+                        <password translate="label">
+                            <label>Unicenta Opos Database Password</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </password>
+                    </fields>
+                </unicentaconfig>
+                <tools translate="label">
+                    <label>Syncronise</label>
+                    <sort_order>15</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <check translate="label">
+                            <label>Get Unicenta Opos Products</label>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>asulpuntounicentaopos/adminhtml_system_config_form_button</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </check>
+                         <orderstatus translate="label">
+                            <label>Order Status for Stock Syncronisation</label>
+                            <comment>Only orders with this status will have the stock value updated in Unicenta Opos</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <validate>required-entry</validate>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </orderstatus>
+                    </fields>
+
+                </tools>
+                <advanced translate="label">
+                    <label>Advanced</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <orderno translate="label">
+                            <label>Last Order No</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </orderno>
+                    </fields>
+                </advanced>
+            </groups>
+        </asulpuntounicentaopos>
+    </sections>
+</config>
