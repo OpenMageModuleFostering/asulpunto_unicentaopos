@@ -50,4 +50,13 @@ class Asulpunto_Unicentaopos_Helper_Data extends Mage_Core_Helper_Abstract
         return $rows;
     }
 
+    public function doExecute($sql){
+        $db=$this->getUnicentaOposConnection();
+        if (is_null($db)) return null;
+        $res=$db->exec($sql);
+        return $res;
+    }
+
+
+
 }

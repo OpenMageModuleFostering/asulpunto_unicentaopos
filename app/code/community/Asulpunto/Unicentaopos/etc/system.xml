@@ -122,6 +122,26 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </orderstatus>
+                        <product_type translate="label">
+                            <label>Default Product Attribute Set</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>unicentaopos/source_producttypelist</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>New products will be created in this Product Attribute Set when uniCenta oPOS creates them in Magento</comment>
+                        </product_type>
+                        <location translate="label">
+                            <label>Stock location</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>unicentaopos/source_location</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>New products will be created in this Product Attribute Set when uniCenta oPOS creates them in Magento</comment>
+                        </location>
                     </fields>
 
                 </tools>
@@ -139,7 +159,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <comment>This order and any orders done before it will not update uniCenta oPOS stock diary.</comment>
                         </orderno>
+
                     </fields>
                 </advanced>
             </groups>

@@ -24,6 +24,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
 {
     private $_UPPHash=array();
     private $_UPS=array();
+    private $_NoImageProducts=array();
 
     public function checkActivate(){
         try{
@@ -47,6 +48,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
     public function cronProducts(){
         try{
             $this->_loadProductHash();//load a hash of history
+            $this->_noImageProducts();//load products without images so that if change is detected we load them.
 
             $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
             $sql="select * from `PRODUCTS`";
@@ -54,6 +56,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
 
             foreach  ($rows as $row){
                 $this->_getUnicentaProducts($row);
+                $this->_doImage($row);
             }
             $this->updateMagentoProducts();
         }catch(Exception $e){
@@ -64,8 +67,9 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
     public function cronStock(){
         try{
             $this->_loadStock();
+            $loc=Mage::getStoreConfig('asulpuntounicentaopos/tools/location');
             $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
-            $sql="select b.REFERENCE as REFERENCE,a.UNITS as UNITS from `STOCKCURRENT` a , `PRODUCTS` b where a.PRODUCT=b.ID";
+            $sql="select b.REFERENCE as REFERENCE,a.UNITS as UNITS from `STOCKCURRENT` a , `PRODUCTS` b where a.PRODUCT=b.ID and location='$loc'";
             $rows=$db->query($sql);
             foreach  ($rows as $row){
                 $this->_getUnicentaStock($row);
@@ -76,9 +80,29 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
         }
     }
 
+    private function _noImageProducts(){
+        $collection=Mage::getModel('unicentaopos/unicentaoposproduct')->getCollection();
+        $collection->addFieldToFilter('image', array('null' => true));
+        foreach ($collection as $item){
+            $this->_NoImageProducts[$item->getSku()]=1;
+        }
+    }
+
+    private function _doImage($row){
+        if (empty($row['IMAGE'])) return true;
+        if (array_key_exists($row['REFERENCE'],$this->_NoImageProducts)){
+            $mageRow=$this->_getRowByCode($row['REFERENCE']);
+            $mageRow->setImage($row['IMAGE']);
+            $mageRow->setInfoupdated(2);
+            $mageRow->save();
+        }
+    }
+
+
 
     private function _getUnicentaProducts($row){
-        $updateNeeded=false;
+            $updateNeeded=false;
+            $state=0;
 
         $md5=md5(
                     $row['CODE'].'|'.
@@ -89,14 +113,18 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
                 );
 
         if (array_key_exists($row['REFERENCE'],$this->_UPPHash)){
+        //First Check Hashkey
             if ($this->_UPPHash[$row['REFERENCE']]!=$md5){
                 $updateNeeded=true;
+                $state=1; //if 1 do not do image
                 $mageRow=$this->_getRowByCode($row['REFERENCE']);
             }
         }else{
             $updateNeeded=true;
+            $state=2;    //if 2 also create image
             $mageRow=Mage::getModel('unicentaopos/unicentaoposproduct');
         }
+
         if ($updateNeeded){
             $mageRow->setName($row['NAME']);
             $mageRow->setSku($row['REFERENCE']);
@@ -105,7 +133,8 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
             $mageRow->setCost($row['PRICEBUY']);
             $mageRow->setPrice($row['PRICESELL']);
             $mageRow->setStock($row['STOCKVOLUME']);
-            $mageRow->setInfoupdated(1);
+            $mageRow->setImage($row['IMAGE']);
+            $mageRow->setInfoupdated($state);
             $mageRow->save();
         }
     }
@@ -172,11 +201,13 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
     }
 
     private function _updateUnicentaStock(){
+        $loc=Mage::getStoreConfig('asulpuntounicentaopos/tools/location');
         $col=Mage::getModel('unicentaopos/unicentaoposorderitem')->getCollection()->addFilter('stockupdated',1);
+
         try{
             $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
             foreach($col as $item){
-                $sql="UPDATE `STOCKCURRENT` set UNITS=UNITS-{$item->getQuantity()} where PRODUCT=(SELECT ID FROM PRODUCTS WHERE REFERENCE='{$item->getSku()}')";
+                $sql="UPDATE `STOCKCURRENT` set UNITS=UNITS-{$item->getQuantity()} where PRODUCT=(SELECT ID FROM PRODUCTS WHERE REFERENCE='{$item->getSku()}') and location='$loc'";
                 $res=$db->query($sql);
                 $item->setStockupdated(0);
                 $item->save();
@@ -198,7 +229,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
     }
 
     public  function updateMagentoProducts(){
-        $col=Mage::getModel('unicentaopos/unicentaoposproduct')->getCollection()->addFilter('infoupdated',1);
+        $col=Mage::getModel('unicentaopos/unicentaoposproduct')->getCollection()->addFieldToFilter('infoupdated',array('in' => array('1', '2')));
         foreach ($col as $row){
             $this->_saveMagentoProduct($row);
         }
@@ -230,6 +261,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
     private function _saveMagentoProduct($row){
         try
         {
+            $ptype=$this->getProductType();
             $newProduct=false;
             $product = Mage::getModel('catalog/product');
             if ($row->getMagentoProductId()){
@@ -239,7 +271,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
             if (!$product->getId()){
                 $product->setSku($row->getSku());
                 $product->setTypeId('simple');
-                $product->setAttributeSetId(9);
+                $product->setAttributeSetId($ptype);
                 $product->setTaxClassId(1);
                 $product->setWeight(0.0);
                 $sData['qty']=$row->getStock();
@@ -256,10 +288,11 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
             $sData=$product->getStockData($sData);
             $product->setCostPrice($row->getCost());
             $product->setPrice($row->getPrice());
+            if ($row->getInfoupdated()==2) $product=Mage::getModel('unicentaopos/unicentaoposproductapi')->setProductImage($row->getImage(),$product);
             $product->save();
 
             if ($newProduct) Mage::getModel('catalog/product_status')->updateProductStatus($product->getId(), 0, Mage_Catalog_Model_Product_Status::STATUS_DISABLED);
-
+            if ($row->getInfoupdated()==2) Mage::getModel('unicentaopos/unicentaoposproductapi')->setProductImage($row->getImage(),$product);
             $row->setInfoupdated(0);
             $row->setMagentoProductId($product->getId());
             $row->save();
@@ -269,6 +302,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
         {
             Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
         }
+        unset($row);
         return 0;
     }
 
@@ -292,6 +326,25 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
             $this->_UPS[$item->getSku()]=$item->getStock();
         }
         unset($cols);
+    }
+
+    private function getProductType(){
+            return Mage::getStoreConfig('asulpuntounicentaopos/tools/product_type');
+    }
+
+    public function getLocations(){
+        try{
+            $ARR=array();
+            $rows=Mage::Helper('unicentaopos')->doQuery("select * from `LOCATIONS`");
+            if (!is_null($rows)){
+                foreach  ($rows as $row){
+                    $ARR[$row['ID']]=$row['NAME'];
+                }
+            }
+        }catch(Exception $e){
+            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
+        }
+        return $ARR;
     }
 
 
