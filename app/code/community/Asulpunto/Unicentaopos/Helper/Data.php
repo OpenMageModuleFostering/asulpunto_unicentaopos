@@ -31,9 +31,10 @@ class Asulpunto_Unicentaopos_Helper_Data extends Mage_Core_Helper_Abstract
         $password=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/password');
         $name=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/dbname');
         try {
-            $db = new PDO("mysql:host={$url};dbname={$name}",
+            $db = new PDO("mysql:host={$url};dbname={$name};charset=utf8",
                 $login,
-                $password
+                $password,
+                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
             );
         } catch (Exception $e){
             Mage::log(__METHOD__." ERROR Getting Connetion URL:$url DBNAME:$name Login:$login Password:$password",null,"asulpunto_unicentaopos.log");
@@ -46,8 +47,16 @@ class Asulpunto_Unicentaopos_Helper_Data extends Mage_Core_Helper_Abstract
     public function doQuery($sql){
         $db=$this->getUnicentaOposConnection();
         if (is_null($db)) return null;
-        $rows=$db->query($sql);
-        return $rows;
+        $stm=$db->prepare($sql);
+        $stm->execute();
+
+        if ($stm->errorCode()==0){
+           $rows=$stm->fetchAll();
+           return $rows;
+        } else {
+            Mage::log("FAIL: \n".print_r($stm->errorInfo(),true)."SQL:".$sql,null,"asulpunto_unicentaopos.log");
+            return null;
+        }
     }
 
     public function doExecute($sql){

@@ -47,7 +47,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[Version: 0.9<br/>Module developed by <a href="http://www.asulpunto.com">Asulpunto</a><br/>Support: <a href="http://www.asulpunto.com/supportforum">http://www.asulpunto.com/supportforum</a>]]></comment>
+                        <![CDATA[Version: 1.0.0<br/>Module developed by <a href="http://www.asulpunto.com">Asulpunto</a><br/>Support: <a href="http://www.asulpunto.com/supportforum">http://www.asulpunto.com/supportforum</a>]]></comment>
                 </banner>
                 <unicentaconfig translate="label">
                     <label>uniCenta Connection Configuration</label>

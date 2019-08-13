@@ -31,16 +31,6 @@ class Asulpunto_Unicentaopos_Model_Productstock extends Mage_Core_Model_Abstract
     private $_cnf_shortdescription='';
     private $_cnf_price='';
     private $_cnf_name='';
-    private $_cnf_barcode_attribute='';
-
-    public function __construct() {
-        $this->_cnf_longdescription=  Mage::getStoreConfig('asulpuntounicentaopos/attributes/longdescription');
-        $this->_cnf_shortdescription= Mage::getStoreConfig('asulpuntounicentaopos/attributes/shortdescription');
-        $this->_cnf_price=            Mage::getStoreConfig('asulpuntounicentaopos/attributes/price');
-        $this->_cnf_name=             Mage::getStoreConfig('asulpuntounicentaopos/attributes/name');
-        $this->_cnf_barcode_attribute=Mage::getStoreConfig('asulpuntounicentaopos/attributes/barcode');
-        parent::_construct();
-    }
 
 
     public function setProductImage($image,$product){
@@ -96,17 +86,14 @@ class Asulpunto_Unicentaopos_Model_Productstock extends Mage_Core_Model_Abstract
                 $newProduct=true;
             }
 
+            $cnf_barcode_attribute=Mage::getStoreConfig('asulpuntounicentaopos/attributes/barcode');
             //$product->setWebsiteIds(array(1));
-            $product=$this->_transferField($product,'name',$row->getName(),$this->_cnf_name,$newProduct);
-            $product=$this->_transferField($product,'description',$row->getLongdesc(),$this->_cnf_longdescription,$newProduct);
+            $product=$this->_transferField($product,'name',         $row->getName(),$this->_cnf_name,$newProduct);
+            $product=$this->_transferField($product,'description',  $row->getLongdesc(),$this->_cnf_longdescription,$newProduct);
             $product=$this->_transferField($product,'short_description',$row->getName(),$this->_cnf_shortdescription,$newProduct);
-            $product=$this->_transferField($product,'price',$row->getPrice(),$this->_cnf_price,$newProduct);
-            $product=$this->_transferField($product,$this->_cnf_barcode_attribute,$row->getBarcode(),Asulpunto_Unicentaopos_Model_Source_Transfer::TRANSFER_ALWAYS,$newProduct);
+            $product=$this->_transferField($product,'price',        $row->getPrice(),$this->_cnf_price,$newProduct);
+            $product=$this->_transferField($product,$cnf_barcode_attribute,$row->getBarcode(),Asulpunto_Unicentaopos_Model_Source_Transfer::TRANSFER_ALWAYS,$newProduct);
 
-            //$product->setName($row->getName());
-            //$product->setDescription();
-            //$product->setShortDescription($row->getName());
-            //$product->setPrice($row->getPrice());
             if ($row->getInfoupdated()==2) $product=$this->setProductImage($row->getImage(),$product);
             $product->save();
 
@@ -254,20 +241,19 @@ class Asulpunto_Unicentaopos_Model_Productstock extends Mage_Core_Model_Abstract
 
 
     private function _transferField($object,$name,$value,$config,$newMode){
+        $arr=explode('_',$name);
+        $name='';
+        foreach($arr as $s){
+            $name=$name.ucfirst($s);
+        }
+        $f="set$name";
+
         if ($newMode){
             if ($config==Asulpunto_Unicentaopos_Model_Source_Transfer::TRANSFER_ALWAYS || $config==Asulpunto_Unicentaopos_Model_Source_Transfer::TRANSFER_CREATE){
-                $arr=explode('_',$name);
-                $name='';
-                foreach($arr as $s){
-                    $name=$name.ucfirst($name);
-                }
-                $f="set$name";
                 $object->$f($value);
             }
         }else{ //This is update mode
             if ($config==Asulpunto_Unicentaopos_Model_Source_Transfer::TRANSFER_ALWAYS ){
-                $name=ucfirst($name);
-                $f="set$name";
                 $object->$f($value);
             }
         }
@@ -275,11 +261,18 @@ class Asulpunto_Unicentaopos_Model_Productstock extends Mage_Core_Model_Abstract
     }
 
 
-    public function configSim($cfg){
-        $this->_cnf_longdescription=$cfg;
-        $this->_cnf_shortdescription=$cfg;
-        $this->_cnf_price=$cfg;
-        $this->_cnf_name=$cfg;
+    public function configSim($cfg=null){
+        if (is_null($cfg )){
+            $this->_cnf_longdescription=Mage::getStoreConfig('asulpuntounicentaopos/attributes/longdescription');
+            $this->_cnf_shortdescription=Mage::getStoreConfig('asulpuntounicentaopos/attributes/shortdescription');
+            $this->_cnf_price=Mage::getStoreConfig('asulpuntounicentaopos/attributes/price');
+            $this->_cnf_name=Mage::getStoreConfig('asulpuntounicentaopos/attributes/name');
+        } else {
+            $this->_cnf_longdescription=$cfg;
+            $this->_cnf_shortdescription=$cfg;
+            $this->_cnf_price=$cfg;
+            $this->_cnf_name=$cfg;
+        }
     }
 
 }

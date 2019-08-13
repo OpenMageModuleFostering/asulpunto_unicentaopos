@@ -23,19 +23,15 @@
 class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstract
 {
 
-
-
     public function checkActivate(){
-        try{
-            $rows=Mage::Helper('unicentaopos')->doQuery("select * from `APPLICATIONS`");
-            if (!is_null($rows)){
+
+
+        $rows=Mage::Helper('unicentaopos')->doQuery("select * from `APPLICATIONS`");
+           if (!is_null($rows)){
                foreach  ($rows as $row){
                     if ($row['ID']=='unicentaopos')
                         return 'OK';
                     }
-            }
-        }catch(Exception $e){
-            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
         }
         $error['url']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/url');
         $error['login']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/login');
@@ -45,29 +41,28 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
         return json_encode($error);
     }
 
-    public function cronProducts($mode=''){
-        try{
+    public function cronProducts($mode){
+
             $ps=Mage::getModel('unicentaopos/productstock');
             $ps->loadProductHash();//load a hash of history
             $ps->noImageProducts();//load products without images so that if change is detected we load them.
 
-            if ($mode!=''){
+            if (is_a($mode,'Mage_Cron_Model_Schedule')){
+                $ps->configSim();
+            }else{
                 $ps->configSim($mode);
             }
             $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
             if (is_null($db))return false;
             $sql="select * from `PRODUCTS`";
             $rows=$db->query($sql);
+            if (is_null($rows)) return false;
 
             foreach  ($rows as $row){
                 $ps->getUnicentaProducts($row);
                 $ps->doImage($row);
             }
             $ps->updateMagentoProducts();
-        }catch(Exception $e){
-            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
-            return false;
-        }
         return true;
     }
 
