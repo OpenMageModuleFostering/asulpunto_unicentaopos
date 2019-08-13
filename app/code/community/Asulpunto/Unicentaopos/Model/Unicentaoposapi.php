@@ -27,17 +27,21 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
 
     public function checkActivate(){
         try{
-            $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
-            $sql="select * from `APPLICATIONS`";
-            $rows=$db->query($sql);
-            foreach  ($rows as $row){
-                if ($row['ID']=='unicentaopos')
-                    return true;
+            $rows=Mage::Helper('unicentaopos')->doQuery("select * from `APPLICATIONS`");
+            if (!is_null($rows)){
+               foreach  ($rows as $row){
+                    if ($row['ID']=='unicentaopos')
+                        return 'OK';
+                    }
             }
         }catch(Exception $e){
-            Mage::log("checkActivate() Error. ".$e->getMessage()."asulpunto_unicentaopos.log");
+            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
         }
-        return false;
+        $error['url']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/url');
+        $error['login']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/login');
+        $error['password']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/password');
+        $error['name']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/dbname');
+        return json_encode($error);
     }
 
     public function cronProducts(){
@@ -53,7 +57,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
             }
             $this->updateMagentoProducts();
         }catch(Exception $e){
-            Mage::log("cronProducts() Error. ".$e->getMessage()."asulpunto_unicentaopos.log");
+            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
         }
     }
 
@@ -68,7 +72,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
             }
             $this->updateMagentoStock();
         }catch(Exception $e){
-            Mage::log("cronStock() Error. ".$e->getMessage()."asulpunto_unicentaopos.log");
+            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
         }
     }
 
@@ -178,7 +182,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
                 $item->save();
             }
         }catch(Exception $e){
-                Mage::log("_updateUnicentaStock() Error. ".$e->getMessage()."asulpunto_unicentaopos.log");
+            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
         }
     }
 
@@ -263,7 +267,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
         }
         catch (exception $e)
         {
-            Mage::log("_saveMagentoProduct() Error. ".$e->getMessage()."asulpunto_unicentaopos.log");
+            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
         }
         return 0;
     }

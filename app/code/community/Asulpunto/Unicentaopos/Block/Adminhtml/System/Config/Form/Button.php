@@ -62,7 +62,7 @@ class Asulpunto_Unicentaopos_Block_Adminhtml_System_Config_Form_Button extends M
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
             'id'        => 'asulpuntounicentaopos_button',
-            'label'     => $this->helper('adminhtml')->__('Test Connection & Get Products'),
+            'label'     => $this->helper('adminhtml')->__('Test Connection'),
             'onclick'   => 'javascript:check(); return false;'
         ));
 

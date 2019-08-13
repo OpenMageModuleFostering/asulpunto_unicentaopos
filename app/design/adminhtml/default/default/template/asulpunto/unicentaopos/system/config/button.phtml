@@ -28,10 +28,15 @@
             method:     'get',
             onSuccess: function(transport){
 
-                if (transport.responseText){
-                    alert('Connection OK. Syncronisation has been activated.')
+                if (transport.responseText=='OK'){
+                    alert('Connection OK. Syncronisation has been activated.');
                 }else {
-                    alert('Connection Error');
+                    obj=JSON.parse(transport.responseText);
+                    url=obj['url'];
+                    name=obj['name'];
+                    login=obj['login'];
+                    pass=obj['password'];
+                    alert("Connection ERROR. Cannot connect to database. "+"\nHostname:"+url+"\nDatabase name:"+name+"\nLogin:"+login+"\nPassword:"+pass+"\nPlease change the configuration, press the 'Save Config' button and test again.\nPlease check [magento]/var/system/asulpunto_unicentaopos.log for more details.");
                 }
             }
         });

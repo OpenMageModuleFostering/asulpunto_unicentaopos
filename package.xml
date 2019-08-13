@@ -1,28 +1,33 @@
 <?xml version="1.0"?>
 <package>
     <name>Asulpunto_Unicentaopos</name>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <stability>stable</stability>
     <license uri="http://opensource.org/licenses/GPL-3.0">GNU General Public License 3.0</license>
     <channel>community</channel>
     <extends/>
     <summary>A basic integration for Magento with the popular Unicenta OPOS the open source, touch screen POS. </summary>
-    <description>Integrates Magento with Unicenta OPOS. http://www.unicentaopos.co.uk &#xD;
-Unicenta is a free, commercial grade POS. It also supports touch screen terminals.&#xD;
+    <description>Integrates Magento with uniCenta oPOS. http://www.unicentaopos.co.uk &#xD;
+uniCenta oPOS is a free, commercial grade POS. It also supports touch screen terminals.&#xD;
 &#xD;
 Features:&#xD;
--Product created on Unicenta a create automatically on Magento&#xD;
--Stock updates on Unicenta are sent to Magento&#xD;
--Purchases on Magento subtract stock from Unicenta.&#xD;
+-Products created on uniCenta oPOS are created automatically on Magento&#xD;
+-Stock Diary updates on uniCenta oPOS are sent to Magento.&#xD;
+-Purchases on uniCenta oPOS reduce stock from Magento.&#xD;
+-Purchases on Magento subtract stock from uniCenta oPOS Stock Diary.&#xD;
 &#xD;
-To use this extension you have to install Unicenta's database on a Mysql server accessible by the Magento server.&#xD;
+To use this extension you have to install uniCenta oPOS's database on a Mysql server accessible by the Magento server.&#xD;
 &#xD;
  </description>
-    <notes>First official release.</notes>
+    <notes>0.0.4&#xD;
+Advanced log to identify database connection issues&#xD;
+&#xD;
+0.0.3&#xD;
+First official public release  </notes>
     <authors><author><name>asulpunto</name><user>asulpunto</user><email>asulpunto@asulpunto.com</email></author></authors>
-    <date>2013-09-19</date>
-    <time>17:16:28</time>
-    <contents><target name="magecommunity"><dir name="Asulpunto"><dir name="Unicentaopos"><dir name="Block"><dir name="Adminhtml"><dir name="System"><dir name="Config"><dir name="Form"><file name="Button.php" hash="c8d765e9cd5f9609e1ffd4892cfd1539"/></dir></dir></dir></dir></dir><dir name="Helper"><file name="Data.php" hash="e72e7f19036b4de80f1e7b6be0ca7118"/></dir><dir name="Model"><dir name="Mysql4"><dir name="Unicentaoposorderitem"><file name="Collection.php" hash="bb9cf8ab48304c34fd7bd575e1002574"/></dir><file name="Unicentaoposorderitem.php" hash="edc7cfecd2b60b0bc372da8c0509cf7d"/><dir name="Unicentaoposproduct"><file name="Collection.php" hash="03f65e284b426d36daa2376e38a813e1"/></dir><file name="Unicentaoposproduct.php" hash="1f849c04da97b863ee88c3b34dc8255b"/></dir><file name="Unicentaoposapi.php" hash="b9f4e6923e17c813be24d0404e673684"/><file name="Unicentaoposorderitem.php" hash="31b0f22a1fa3af396a01b741fd9d4adf"/><file name="Unicentaoposproduct.php" hash="8754d16acf3372355bf379deb563ab03"/></dir><dir name="controllers"><dir name="Adminhtml"><file name="UnicentaoposController.php" hash="7da0f12f269dfdc16ef1f8881753d5fa"/></dir></dir><dir name="etc"><file name="config.xml" hash="f04711f0595f920fa4306867ef4a2000"/><file name="system.xml" hash="379f43dc8ce826399f0e297b0e6bf3ca"/></dir><dir name="sql"><dir name="unicentaopos_setup"><file name="mysql4-install-0.0.1.php" hash="84ba3c4373b2a1c6b1219e8fbd881b51"/><file name="mysql4-upgrade-0.0.1-0.0.2.php" hash="76ea73b06b500e88db0891df95744b65"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="template"><dir name="asulpunto"><dir name="unicentaopos"><dir name="system"><dir name="config"><file name="button.phtml" hash="37aa35efb0ab32383f130ae9c5bd25df"/></dir></dir></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Asulpunto_Unicentaopos.xml" hash="0b81c393d2739bbabe04eeccadeaf858"/></dir></target></contents>
+    <date>2013-09-27</date>
+    <time>16:56:03</time>
+    <contents><target name="magecommunity"><dir name="Asulpunto"><dir name="Unicentaopos"><dir name="Block"><dir name="Adminhtml"><dir name="System"><dir name="Config"><dir name="Form"><file name="Button.php" hash="ee172a1ea50cd3f75cf819ba40aa2ac3"/></dir></dir></dir></dir></dir><dir name="Helper"><file name="Data.php" hash="be527e82077d4e3fb91e0509e3e9eaec"/></dir><dir name="Model"><dir name="Mysql4"><dir name="Unicentaoposorderitem"><file name="Collection.php" hash="bb9cf8ab48304c34fd7bd575e1002574"/></dir><file name="Unicentaoposorderitem.php" hash="edc7cfecd2b60b0bc372da8c0509cf7d"/><dir name="Unicentaoposproduct"><file name="Collection.php" hash="03f65e284b426d36daa2376e38a813e1"/></dir><file name="Unicentaoposproduct.php" hash="1f849c04da97b863ee88c3b34dc8255b"/></dir><file name="Unicentaoposapi.php" hash="3a24379f0984dd3af1f3b509bd7409b9"/><file name="Unicentaoposorderitem.php" hash="31b0f22a1fa3af396a01b741fd9d4adf"/><file name="Unicentaoposproduct.php" hash="8754d16acf3372355bf379deb563ab03"/></dir><dir name="controllers"><dir name="Adminhtml"><file name="UnicentaoposController.php" hash="7da0f12f269dfdc16ef1f8881753d5fa"/></dir></dir><dir name="etc"><file name="config.xml" hash="c3ae12d95c4d1f39d784ee6b3e4e58df"/><file name="system.xml" hash="14b9b9206e187554a17492f974f47305"/></dir><dir name="sql"><dir name="unicentaopos_setup"><file name="mysql4-install-0.0.1.php" hash="84ba3c4373b2a1c6b1219e8fbd881b51"/><file name="mysql4-upgrade-0.0.1-0.0.2.php" hash="76ea73b06b500e88db0891df95744b65"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="template"><dir name="asulpunto"><dir name="unicentaopos"><dir name="system"><dir name="config"><file name="button.phtml" hash="023c9f40cee588b3e3ad51728a8b9865"/></dir></dir></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Asulpunto_Unicentaopos.xml" hash="0b81c393d2739bbabe04eeccadeaf858"/></dir></target></contents>
     <compatible/>
-    <dependencies><required><php><min>5.2.0</min><max>5.4.0</max></php></required></dependencies>
+    <dependencies><required><php><min>5.2.0</min><max>5.5.0</max></php></required></dependencies>
 </package>

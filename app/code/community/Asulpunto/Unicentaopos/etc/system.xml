@@ -31,7 +31,7 @@
     <sections>
 
         <asulpuntounicentaopos translate="label" module="unicentaopos">
-            <label>Unicenta Opos</label>
+            <label>uniCenta oPOS </label>
             <tab>asulpunto</tab>
             <frontend_type>text</frontend_type>
             <sort_order>99999</sort_order>
@@ -57,36 +57,40 @@
                     <show_in_store>0</show_in_store>
                     <fields>
                         <url translate="label">
-                            <label>Unicenta Opos Hostname</label>
+                            <label>uniCenta oPOS Hostname</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </url>
                         <dbname translate="label">
-                            <label>Unicenta Opos Database Name</label>
+                            <label>uniCenta oPOS Database Name</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </dbname>
                         <login translate="label">
-                            <label>Unicenta Opos Database Login</label>
+                            <label>uniCenta oPOS Database Login</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </login>
                         <password translate="label">
-                            <label>Unicenta Opos Database Password</label>
+                            <label>uniCenta oPOS Database Password</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </password>
                     </fields>
                 </unicentaconfig>
@@ -98,17 +102,18 @@
                     <show_in_store>0</show_in_store>
                     <fields>
                         <check translate="label">
-                            <label>Get Unicenta Opos Products</label>
+                            <label>Check the connection details</label>
                             <frontend_type>button</frontend_type>
                             <frontend_model>asulpuntounicentaopos/adminhtml_system_config_form_button</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <comment>Please, save the database configuration before testing the connection.</comment>
                         </check>
                          <orderstatus translate="label">
                             <label>Order Status for Stock Syncronisation</label>
-                            <comment>Only orders with this status will have the stock value updated in Unicenta Opos</comment>
+                             <comment>Only orders with this status will have the stock value updated in Unicenta Opos</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_order_status</source_model>
                             <validate>required-entry</validate>

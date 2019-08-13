@@ -30,11 +30,24 @@ class Asulpunto_Unicentaopos_Helper_Data extends Mage_Core_Helper_Abstract
         $login=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/login');
         $password=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/password');
         $name=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/dbname');
-        $db = new PDO("mysql:host={$url};dbname={$name}",
-            $login,
-            $password
-        );
-        return $db;
+        try {
+            $db = new PDO("mysql:host={$url};dbname={$name}",
+                $login,
+                $password
+            );
+        } catch (Exception $e){
+            Mage::log(__METHOD__." ERROR Getting Connetion URL:$url DBNAME:$name Login:$login Password:$password",null,"asulpunto_unicentaopos.log");
+            Mage::log(__METHOD__.$e->getMessage(),null,"asulpunto_unicentaopos.log");
+            return null;
+        }
+         return $db;
+    }
+
+    public function doQuery($sql){
+        $db=$this->getUnicentaOposConnection();
+        if (is_null($db)) return null;
+        $rows=$db->query($sql);
+        return $rows;
     }
 
 }
