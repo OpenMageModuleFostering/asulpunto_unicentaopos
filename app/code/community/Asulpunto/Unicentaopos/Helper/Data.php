@@ -25,6 +25,10 @@
 class Asulpunto_Unicentaopos_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
+    public function getTableName($table){
+        return Mage::getStoreConfig("asulpuntounicentaopos/tablenames/$table");
+    }
+
     public function getUnicentaOposConnection(){
         $url=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/url');
         $login=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/login');

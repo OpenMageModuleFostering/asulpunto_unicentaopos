@@ -47,7 +47,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[Version: 1.0.0<br/>Module developed by <a href="http://www.asulpunto.com">Asulpunto</a><br/>Support: <a href="http://www.asulpunto.com/supportforum">http://www.asulpunto.com/supportforum</a>]]></comment>
+                        <![CDATA[Version: 1.0.1<br/>Module developed by <a href="http://www.asulpunto.com">Asulpunto</a><br/>Support: <a href="http://www.asulpunto.com/supportforum">http://www.asulpunto.com/supportforum</a>]]></comment>
                 </banner>
                 <unicentaconfig translate="label">
                     <label>uniCenta Connection Configuration</label>
@@ -141,7 +141,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                            <comment>New products will be created in this Product Attribute Set when uniCenta oPOS creates them in Magento</comment>
+                            <comment>The stock will be synchronished against this location. This extension currently supports a single location.</comment>
                         </location>
                     </fields>
                 </tools>
@@ -252,6 +252,51 @@
                         </barcode>
                     </fields>
                 </attributes>
+        <tablenames translate="label">
+                    <label>Unicenta Table Names</label>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <products translate="label">
+                            <label>Unicenta Products Table</label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Match the case in the database</comment>
+                        </products>
+                        <stockcurrent translate="label">
+                            <label>Unicenta Stockcurrent Table</label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Match the case in the database</comment>
+                        </stockcurrent>
+                        <locations translate="label">
+                            <label>Unicenta Locations Table</label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Match the case in the database</comment>
+                        </locations>
+                        <applications translate="label">
+                            <label>Unicenta Applications Table</label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Match the case in the database</comment>
+                        </applications>
+            </fields>
+        </tablenames>
             </groups>
         </asulpuntounicentaopos>
     </sections>

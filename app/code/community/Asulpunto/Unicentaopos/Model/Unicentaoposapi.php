@@ -22,17 +22,41 @@
 
 class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstract
 {
+    const TABLE_PRODUCTS='products';
+    const TABLE_LOCATIONS='locations';
+    const TABLE_STOCKCURRENT='stockcurrent';
+    const TABLE_APPLICATIONS='applications';
 
-    public function checkActivate(){
-
-
-        $rows=Mage::Helper('unicentaopos')->doQuery("select * from `APPLICATIONS`");
-           if (!is_null($rows)){
-               foreach  ($rows as $row){
-                    if ($row['ID']=='unicentaopos')
-                        return 'OK';
-                    }
+public function checkActivate(){
+        $config = new Mage_Core_Model_Config();
+        $rows=Mage::Helper('unicentaopos')->doQuery("show tables");
+        $hasTables=false;
+        if (!is_null($rows)){
+            Mage::log(__METHOD__.'SHOW TABLES: '.print_r($rows,true),null,"asulpunto_unicentaopos.log");
+            foreach  ($rows as $row){
+                $hasTables=true;
+                if (strtolower($row[0])==self::TABLE_PRODUCTS){
+                    $config->saveConfig("asulpuntounicentaopos/tablenames/".self::TABLE_PRODUCTS, $row[0], 'default', 0);
+                }
+                if (strtolower($row[0])==self::TABLE_APPLICATIONS){
+                    $config->saveConfig("asulpuntounicentaopos/tablenames/".self::TABLE_APPLICATIONS, $row[0], 'default', 0);
+                }
+                if (strtolower($row[0])==self::TABLE_LOCATIONS){
+                    $config->saveConfig("asulpuntounicentaopos/tablenames/".self::TABLE_LOCATIONS, $row[0], 'default', 0);
+                }
+                if (strtolower($row[0])==self::TABLE_STOCKCURRENT){
+                    $config->saveConfig("asulpuntounicentaopos/tablenames/".self::TABLE_STOCKCURRENT, $row[0], 'default', 0);
+                }
+            }
+        }else{
+            Mage::log(__METHOD__.'SHOW TABLES: IS EMPTY ',null,"asulpunto_unicentaopos.log");
         }
+        Mage::app()->getConfig()->reinit();//reinit settings
+        if ($hasTables){
+            if ($this->_checkApplication()) return 'OK';
+        }
+
+
         $error['url']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/url');
         $error['login']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/login');
         $error['password']=Mage::getStoreConfig('asulpuntounicentaopos/unicentaconfig/password');
@@ -40,6 +64,20 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
 
         return json_encode($error);
     }
+
+    private function _checkApplication(){
+        $applicationsTable=Mage::Helper('unicentaopos')->getTableName(self::TABLE_APPLICATIONS);
+        $rows=Mage::Helper('unicentaopos')->doQuery("select * from `$applicationsTable`");
+        if (!is_null($rows)){
+            foreach  ($rows as $row){
+                if ($row['ID']=='unicentaopos')
+                return true;
+            }
+        }
+        Mage::log(__METHOD__.'Test Connection Failed',null,"asulpunto_unicentaopos.log");
+        return false;
+    }
+
 
     public function cronProducts($mode){
 
@@ -53,8 +91,9 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
                 $ps->configSim($mode);
             }
             $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
+            $productsTable=Mage::Helper('unicentaopos')->getTableName(self::TABLE_PRODUCTS);
             if (is_null($db))return false;
-            $sql="select * from `PRODUCTS`";
+            $sql="select * from `$productsTable`";
             $rows=$db->query($sql);
             if (is_null($rows)) return false;
 
@@ -73,7 +112,10 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
             $loc=Mage::getStoreConfig('asulpuntounicentaopos/tools/location');
             $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
             if (is_null($db)) return false;
-            $sql="select b.REFERENCE as REFERENCE,a.UNITS as UNITS from `STOCKCURRENT` a , `PRODUCTS` b where a.PRODUCT=b.ID and location='$loc'";
+            $stockcurrentTable=Mage::Helper('unicentaopos')->getTableName(self::TABLE_STOCKCURRENT);
+            $productsTable=Mage::Helper('unicentaopos')->getTableName(self::TABLE_PRODUCTS);
+
+            $sql="select b.REFERENCE as REFERENCE,a.UNITS as UNITS from `$stockcurrentTable` a , `$productsTable` b where a.PRODUCT=b.ID and location='$loc'";
 
             $rows=$db->query($sql);
             foreach  ($rows as $row){
@@ -91,11 +133,13 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
     private function _updateUnicentaStock(){
         $loc=Mage::getStoreConfig('asulpuntounicentaopos/tools/location');
         $col=Mage::getModel('unicentaopos/unicentaoposorderitem')->getCollection()->addFilter('stockupdated',1);
+        $stockcurrentTable=Mage::Helper('unicentaopos')->getTableName(self::TABLE_STOCKCURRENT);
+        $productsTable=Mage::Helper('unicentaopos')->getTableName(self::TABLE_PRODUCTS);
 
         try{
             $db=Mage::Helper('unicentaopos')->getUnicentaOposConnection();
             foreach($col as $item){
-                $sql="UPDATE `STOCKCURRENT` set UNITS=UNITS-{$item->getQuantity()} where PRODUCT=(SELECT ID FROM PRODUCTS WHERE REFERENCE='{$item->getSku()}') and location='$loc'";
+                $sql="UPDATE `$stockcurrentTable` set UNITS=UNITS-{$item->getQuantity()} where PRODUCT=(SELECT ID FROM $productsTable WHERE REFERENCE='{$item->getSku()}') and location='$loc'";
                 $res=$db->query($sql);
                 $item->setStockupdated(0);
                 $item->save();
@@ -130,6 +174,7 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
         foreach($res as $row){
             $order=Mage::getModel('sales/order')->load($row['entity_id']);
             $so->writeStockOrder($order);
+            Mage::dispatchEvent('asulpunto_unicentaoposapi_post_order',array('order'=>$order));
         }
         $this->_updateUnicentaStock();
     }
@@ -149,7 +194,8 @@ class Asulpunto_Unicentaopos_Model_Unicentaoposapi extends Mage_Core_Model_Abstr
     public function getLocations(){
         try{
             $ARR=array();
-            $rows=Mage::Helper('unicentaopos')->doQuery("select * from `LOCATIONS`");
+            $locationsTable=Mage::Helper('unicentaopos')->getTableName(self::TABLE_LOCATIONS);
+            $rows=Mage::Helper('unicentaopos')->doQuery("select * from `$locationsTable`");
             if (!is_null($rows)){
                 foreach  ($rows as $row){
                     $ARR[$row['ID']]=$row['NAME'];
