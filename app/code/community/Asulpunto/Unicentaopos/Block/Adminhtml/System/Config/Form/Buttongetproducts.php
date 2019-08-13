@@ -20,7 +20,7 @@
  *
  */
 
-class Asulpunto_Unicentaopos_Block_Adminhtml_System_Config_Form_Button extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Asulpunto_Unicentaopos_Block_Adminhtml_System_Config_Form_Buttongetproducts extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /*
      * Set template
@@ -28,7 +28,7 @@ class Asulpunto_Unicentaopos_Block_Adminhtml_System_Config_Form_Button extends M
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('asulpunto/unicentaopos/system/config/button.phtml');
+        $this->setTemplate('asulpunto/unicentaopos/system/config/buttongetproducts.phtml');
     }
 
     /**
@@ -49,7 +49,7 @@ class Asulpunto_Unicentaopos_Block_Adminhtml_System_Config_Form_Button extends M
      */
     public function getAjaxCheckUrl()
     {
-        return Mage::helper('adminhtml')->getUrl('adminhtml/adminhtml_unicentaopos/check');
+        return Mage::helper('adminhtml')->getUrl('adminhtml/adminhtml_unicentaopos/sendproducts');
     }
 
     /**
@@ -61,9 +61,9 @@ class Asulpunto_Unicentaopos_Block_Adminhtml_System_Config_Form_Button extends M
     {
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
-            'id'        => 'asulpuntounicentaopos_button',
-            'label'     => $this->helper('adminhtml')->__('Test Connection'),
-            'onclick'   => 'javascript:unicentaoposcheck(); return false;'
+            'id'        => 'asulpuntounicentaopos_buttongetproducts',
+            'label'     => $this->helper('adminhtml')->__('Get uniCenta oPOS Products'),
+            'onclick'   => 'javascript:unicentaoposproduct(); return false;'
         ));
 
         return $button->toHtml();

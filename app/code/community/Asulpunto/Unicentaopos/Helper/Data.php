@@ -58,5 +58,15 @@ class Asulpunto_Unicentaopos_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
 
+    public function getRowByCode($skucode){
+        $col=Mage::getModel('unicentaopos/unicentaoposproduct')->getCollection()->addFilter('sku',$skucode);
+        if ($col->count()>0){
+            $item= $col->getFirstItem();
+            return $item;
+        }
+        return false; //not found
+    }
+
+
 
 }

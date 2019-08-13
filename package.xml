@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>Asulpunto_Unicentaopos</name>
-    <version>0.0.5</version>
+    <version>0.0.9</version>
     <stability>stable</stability>
     <license uri="http://opensource.org/licenses/GPL-3.0">GNU General Public License 3.0</license>
     <channel>community</channel>
@@ -15,11 +15,22 @@ Features:&#xD;
 -Stock Diary updates on uniCenta oPOS are sent to Magento.&#xD;
 -Purchases on uniCenta oPOS reduce stock from Magento.&#xD;
 -Purchases on Magento subtract stock from uniCenta oPOS Stock Diary.&#xD;
+-Syncronisation works via cron, synchronization of stock or products can now be triggered manually from the admin.&#xD;
 &#xD;
 To use this extension you have to install uniCenta oPOS's database on a Mysql server accessible by the Magento server.&#xD;
 &#xD;
  </description>
-    <notes>0.0.5&#xD;
+    <notes>0.0.9&#xD;
+- Refactored Code&#xD;
+- You can choose if attributes are always transfered or only on product creation&#xD;
+- Moved Test Connection to database connection details&#xD;
+- Renamed the configurations&#xD;
+- Added Sycn Products button to enable you to test it is working without waiting for cron&#xD;
+- Added Sycn Stock button to enable you to test it is working without waiting for cron&#xD;
+- Fixed bug for Magento installations with a prefix&#xD;
+&#xD;
+&#xD;
+0.0.5&#xD;
 * Product set can be configured from Admin. This also solves a problem when Magento's default attribute set was deleted.&#xD;
 * The warehouse that will track the stock can be selected from admin configuration.&#xD;
 * Images on Unicenta are tranfered to Magento when the Magento Product does not have any images.  &#xD;
@@ -30,9 +41,9 @@ Advanced log to identify database connection issues&#xD;
 0.0.3&#xD;
 First official public release  </notes>
     <authors><author><name>asulpunto</name><user>asulpunto</user><email>asulpunto@asulpunto.com</email></author></authors>
-    <date>2013-10-20</date>
-    <time>16:44:01</time>
-    <contents><target name="magecommunity"><dir name="Asulpunto"><dir name="Unicentaopos"><dir name="Block"><dir name="Adminhtml"><dir name="System"><dir name="Config"><dir name="Form"><file name="Button.php" hash="ee172a1ea50cd3f75cf819ba40aa2ac3"/></dir></dir></dir></dir></dir><dir name="Helper"><file name="Data.php" hash="81fac45bfd866818d44d00cc12d7b657"/></dir><dir name="Model"><dir name="Mysql4"><dir name="Unicentaoposorderitem"><file name="Collection.php" hash="bb9cf8ab48304c34fd7bd575e1002574"/></dir><file name="Unicentaoposorderitem.php" hash="edc7cfecd2b60b0bc372da8c0509cf7d"/><dir name="Unicentaoposproduct"><file name="Collection.php" hash="03f65e284b426d36daa2376e38a813e1"/></dir><file name="Unicentaoposproduct.php" hash="1f849c04da97b863ee88c3b34dc8255b"/></dir><dir name="Source"><file name="Location.php" hash="231c61909cef275342fe746e6b1a3406"/><file name="Producttypelist.php" hash="ee920c29a4c36e5d39503d049729c206"/></dir><file name="Unicentaoposapi.php" hash="913169072b0c0b8a610c526527e044f1"/><file name="Unicentaoposorderitem.php" hash="31b0f22a1fa3af396a01b741fd9d4adf"/><file name="Unicentaoposproduct.php" hash="8754d16acf3372355bf379deb563ab03"/><file name="Unicentaoposproductapi.php" hash="61949d0060a34e3f91c6ddd55d2428ab"/></dir><dir name="controllers"><dir name="Adminhtml"><file name="UnicentaoposController.php" hash="7da0f12f269dfdc16ef1f8881753d5fa"/></dir></dir><dir name="etc"><file name="config.xml" hash="d1e4e03c1ce228cd9af2af12ac985315"/><file name="system.xml" hash="728f6378863496c25f860702a5881ec0"/></dir><dir name="sql"><dir name="unicentaopos_setup"><file name="mysql4-install-0.0.1.php" hash="84ba3c4373b2a1c6b1219e8fbd881b51"/><file name="mysql4-upgrade-0.0.1-0.0.2.php" hash="76ea73b06b500e88db0891df95744b65"/><file name="mysql4-upgrade-0.0.4-0.0.5.php" hash="666324a87a44f9e4f161bbea4f4c8c06"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="template"><dir name="asulpunto"><dir name="unicentaopos"><dir name="system"><dir name="config"><file name="button.phtml" hash="023c9f40cee588b3e3ad51728a8b9865"/></dir></dir></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Asulpunto_Unicentaopos.xml" hash="0b81c393d2739bbabe04eeccadeaf858"/></dir></target></contents>
+    <date>2014-01-06</date>
+    <time>19:15:19</time>
+    <contents><target name="magecommunity"><dir name="Asulpunto"><dir name="Unicentaopos"><dir name="Block"><dir name="Adminhtml"><dir name="System"><dir name="Config"><dir name="Form"><file name="Button.php" hash="8de2e6e124cdcd67597725a9a7368ed8"/><file name="Buttongetproducts.php" hash="8d5667a1c1f9d56875d71f6b628c9f36"/><file name="Buttonstock.php" hash="a41f426871cb05ce6b1ddc755419a7be"/></dir></dir></dir></dir></dir><dir name="Helper"><file name="Data.php" hash="24367b6eebc579be96158d8e71c067f5"/></dir><dir name="Model"><dir name="Mysql4"><dir name="Unicentaoposorderitem"><file name="Collection.php" hash="bb9cf8ab48304c34fd7bd575e1002574"/></dir><file name="Unicentaoposorderitem.php" hash="edc7cfecd2b60b0bc372da8c0509cf7d"/><dir name="Unicentaoposproduct"><file name="Collection.php" hash="03f65e284b426d36daa2376e38a813e1"/></dir><file name="Unicentaoposproduct.php" hash="1f849c04da97b863ee88c3b34dc8255b"/></dir><file name="Orders.php" hash="105bd671d41de1b163ec1bb458337136"/><file name="Productstock.php" hash="45d0abf7fbf1d37d41f2a3eafcb97a9e"/><dir name="Source"><file name="Attributes.php" hash="0c9d1465dbeb8c22dc1bf2c207d27738"/><file name="Location.php" hash="231c61909cef275342fe746e6b1a3406"/><file name="Producttypelist.php" hash="ee920c29a4c36e5d39503d049729c206"/><file name="Transfer.php" hash="c6b83cd1c753d8712ae8dcdb79428740"/></dir><file name="Unicentaoposapi.php" hash="b23cc1ed20abeec4e6b0cf16627dae4d"/><file name="Unicentaoposorderitem.php" hash="31b0f22a1fa3af396a01b741fd9d4adf"/><file name="Unicentaoposproduct.php" hash="8754d16acf3372355bf379deb563ab03"/></dir><dir name="controllers"><dir name="Adminhtml"><file name="UnicentaoposController.php" hash="5890605a3563955fb5a33431bde12a1f"/></dir></dir><dir name="etc"><file name="config.xml" hash="d1e4e03c1ce228cd9af2af12ac985315"/><file name="system.xml" hash="80bfc6265954a48e077cdf34206d0f5a"/></dir><dir name="sql"><dir name="unicentaopos_setup"><file name="mysql4-install-0.0.1.php" hash="84ba3c4373b2a1c6b1219e8fbd881b51"/><file name="mysql4-upgrade-0.0.1-0.0.2.php" hash="76ea73b06b500e88db0891df95744b65"/><file name="mysql4-upgrade-0.0.4-0.0.5.php" hash="666324a87a44f9e4f161bbea4f4c8c06"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="template"><dir name="asulpunto"><dir name="unicentaopos"><dir name="system"><dir name="config"><file name="button.phtml" hash="a938d25a39d87ebeaa7f5e6c4eca64b2"/><file name="buttongetproducts.phtml" hash="7b42df54ec62f90ea3e949655db481d5"/><file name="buttonstock.phtml" hash="dcba538825ce28f86d7e809203b4a591"/></dir></dir></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Asulpunto_Unicentaopos.xml" hash="0b81c393d2739bbabe04eeccadeaf858"/></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.2.0</min><max>5.5.0</max></php></required></dependencies>
 </package>

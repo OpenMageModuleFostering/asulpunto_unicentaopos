@@ -19,45 +19,24 @@
  * @license     http://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
  *
  */
+?>
 
+<script type="text/javascript">
+    //<![CDATA[
+    function unicentaoposproduct() {
+        new Ajax.Request('<?php echo $this->getAjaxCheckUrl() ?>', {
+            method:     'get',
+            onSuccess: function(transport){
 
-
-class Asulpunto_Unicentaopos_Adminhtml_UnicentaoposController extends Mage_Adminhtml_Controller_Action
-{
-    /**
-     * Return some checking result
-     *
-     * @return void
-     */
-    public function checkAction()
-    {
-        $result=Mage::getModel('unicentaopos/unicentaoposapi')->checkActivate();
-        Mage::app()->getResponse()->setBody($result);
-
+                if (transport.responseText=='OK'){
+                    alert('Product update complete.');
+                }else{
+                    alert('Product update failed. Please Test Connection and try again.');
+                }
+            }
+        });
     }
+    //]]>
+</script>
 
-    /**
-     * Do products
-     *
-     * @return void
-     */
-    public function sendproductsAction()
-    {
-        $res=Mage::getModel('unicentaopos/unicentaoposapi')->cronProducts();
-        Mage::app()->getResponse()->setBody('OK');
-
-    }
-
-    /**
-     * Do stock
-     *
-     * @return void
-     */
-    public function stockAction()
-    {
-        $res=Mage::getModel('unicentaopos/unicentaoposapi')->cronStock();
-        Mage::app()->getResponse()->setBody('OK');
-
-    }
-
-}
+<?php echo $this->getButtonHtml() ?>
