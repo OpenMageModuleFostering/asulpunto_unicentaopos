@@ -31,7 +31,7 @@
     <sections>
 
         <asulpuntounicentaopos translate="label" module="unicentaopos">
-            <label>Tweaks</label>
+            <label>Unicenta Opos</label>
             <tab>asulpunto</tab>
             <frontend_type>text</frontend_type>
             <sort_order>99999</sort_order>

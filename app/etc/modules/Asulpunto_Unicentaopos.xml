@@ -24,7 +24,7 @@
     <modules>
         <Asulpunto_Unicentaopos>
             <active>true</active>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
         </Asulpunto_Unicentaopos>
     </modules>
 </config>
