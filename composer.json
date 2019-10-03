@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Asulpunto_Unicentaopos",
+    "name": "OpenMageModuleFostering\/Asulpunto_Unicentaopos",
     "type": "magento-module",
     "license": "GNU-General-Public-License-3.0",
     "homepage": "",
     "description": "A basic integration for Magento with the popular Unicenta OPOS the open source, touch screen POS. ",
     "authors": [
-    {
-        "name": "asulpunto",
-        "email": "asulpunto@asulpunto.com"
-    }
-],
+        {
+            "name": "asulpunto",
+            "email": "asulpunto@asulpunto.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
